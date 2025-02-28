@@ -1,5 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
+import random
+
+# Danh sách dữ liệu mẫu
+data_samples = [
+    ("Nguyễn", "Nguyên", "Nam", "0903 612 345", "khoinguyen.21413@gmail.com", "Hòa Khương, Hòa Vang"),
+    ("Lê", "An", "Nữ", "0912 345 678", "lean@gmail.com", "Hà Nội"),
+    ("Trần", "Bình", "Nam", "0987 654 321", "tranbinh@gmail.com", "TPHCM"),
+    ("Phạm", "Thảo", "Nữ", "0971 223 456", "phamthao99@gmail.com", "Đà Nẵng"),
+    ("Hoàng", "Dũng", "Nam", "0904 778 899", "hoangdung@gmail.com", "Hải Phòng"),
+    ("Vũ", "Linh", "Nữ", "0965 112 223", "vulinh@gmail.com", "Cần Thơ"),
+]
 
 # Hàm xử lý khi nhấn nút
 
@@ -33,10 +44,18 @@ tree = ttk.Treeview(frame_table, columns=columns, show="headings", height=8)
 # tạo cột
 for col in columns:
     tree.heading(col, text=col)
-    tree.column(col, width=120)
+    if col == "Email":
+        tree.column(col, width=150)
+    elif col == "Địa chỉ":
+        tree.column(col, width=200)
+    else:
+        tree.column(col, width=60)
 
 tree.pack(pady= 5, fill="both",expand=True)
 
+# Thêm 5 dữ liệu ngẫu nhiên vào danh bạ
+for _ in range(5):
+    tree.insert("", "end", values=random.choice(data_samples))
 # Bố trí widget trên giao diện
 
 # Chạy ứng dụng
