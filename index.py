@@ -3,8 +3,18 @@ from tkinter import ttk,messagebox
 import random
 
 # code event cho 4 nút
-def them():
-    tree.insert("", "end", values=random.choice(data_samples))
+def create_contact():
+    
+    # tree.insert("", "end", values=random.choice(data_samples))
+
+    # Khi insert, hiển thị cửa sổ khác (cửa sổ add) nhập các giá trị vào ô input.
+    # Nhan vao o Them de them du lieu vao bang
+
+
+    # """Mở cửa sổ nhập thông tin khi nhấn 'Tạo mới'."""
+    create_window = tk.Toplevel(root)
+    create_window.title("Tạo mới")
+    create_window.geometry("300x400")
 
 def sua():
     selected_item = tree.selection()
@@ -88,7 +98,7 @@ frame_button.pack(side= "right", fill='y',padx= 5,pady=5)
 
 # code giao diện cho 4 nút
 btn_them = tk.Button(master= frame_button, bg= colour_white,
-                    text= "Thêm",width= 15, command= them)
+                    text= "Tạo mới",width= 15, command= create_contact)
 btn_them.pack(pady= 30)
 
 btn_sua = tk.Button(master= frame_button, bg= colour_white,
