@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk,messagebox
 import random
 
 # Danh sách dữ liệu mẫu
 data_samples = [
-    ("Nguyễn", "Nguyên", "Nam", "0903 612 345", "khoinguyen.21413@gmail.com", "Hòa Khương, Hòa Vang"),
+    ("Nguyễn", "Nguyên", "Nam", "0903 612 345", "khoinguyen.21413@gmail.com", "Đà Nẵng"),
     ("Lê", "An", "Nữ", "0912 345 678", "lean@gmail.com", "Hà Nội"),
-    ("Trần", "Bình", "Nam", "0987 654 321", "tranbinh@gmail.com", "TPHCM"),
+    ("Trần", "Bình", "Nam", "0987 654 321", "tranbinh@gmail.com", "TP Hồ Chí Minh"),
     ("Phạm", "Thảo", "Nữ", "0971 223 456", "phamthao99@gmail.com", "Đà Nẵng"),
     ("Hoàng", "Dũng", "Nam", "0904 778 899", "hoangdung@gmail.com", "Hải Phòng"),
     ("Vũ", "Linh", "Nữ", "0965 112 223", "vulinh@gmail.com", "Cần Thơ"),
@@ -56,7 +56,37 @@ tree.pack(pady= 5, fill="both",expand=True)
 # Thêm 5 dữ liệu ngẫu nhiên vào danh bạ
 for _ in range(5):
     tree.insert("", "end", values=random.choice(data_samples))
-# Bố trí widget trên giao diện
+
+# frame chứa 4 nút theo hàng dọc
+frame_button = tk.Frame(root, bg= colour_black)
+frame_button.pack(side= "right", fill='y',padx= 5,pady=5)
+
+# code event cho 4 nút
+def them():
+    tree.insert("", "end", values=random.choice(data_samples))
+
+def sua():
+    selected_item = tree.selection()
+    if selected_item:
+        tree.item(selected_item, values=random.choice(data_samples))
+    else:
+        messagebox.showwarning("Chú ý", "Vui lòng chọn một người để sửa")
+
+def tim_kiem():
+    for item in tree.get_children():
+        values = tree.item(item, "values")
+        if "Nguyên" in values:
+            tree.selection_set(item)
+            tree.focus(item)
+            return
+    messagebox.showinfo("Thông báo","Không tìm thấy liên hệ")
+
+def xoa():
+    selected_item = tree.selection()
+    if selected_item:
+        tree.delete(selected_item)
+    else:
+        messagebox.showwarning("Chú ý", "Vui lòng chọn một liên hệ để xóa!")
 
 # Chạy ứng dụng
 root.mainloop()
