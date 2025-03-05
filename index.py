@@ -15,6 +15,23 @@ def create_contact():
     create_window = tk.Toplevel(root)
     create_window.title("Tạo mới")
     create_window.geometry("300x400")
+    
+    # tiêu đề
+    tk.Label(create_window, text="Tạo mới", bg="lightgreen", font=("Arial", 14, "bold")).pack(fill="x", pady=5)
+
+    # tạo ô nhập dữ liệu
+    # Họ
+    frame_lastname = tk.Frame(create_window,)
+    frame_lastname.pack(fill="x", padx=10, pady=2)
+    tk.Label(frame_lastname, text= "Họ").pack(side="left")
+    entry_lastname = tk.Entry(frame_lastname, width= 30)
+    entry_lastname.pack(side="right")
+
+    # # Tên
+    # label_lastname = tk.Label(create_window, text= "Họ")
+    # label_lastname.pack(anchor= "w")
+    # entry_lastname = tk.Entry(create_window, width= 30)
+    # entry_lastname.pack(padx=10, pady=2)
 
 def sua():
     selected_item = tree.selection()
@@ -65,8 +82,7 @@ frame_title = tk.Frame(root, bg=colour_black)
 frame_title.pack(fill="x", pady= 5)
 
 # Label tiêu đề chính
-title_label = tk.Label(frame_title, bg=colour_black, font=("Arial", 14, "bold"), text= "Quản lý danh bạ", fg="white")
-title_label.pack(pady=5)
+tk.Label(frame_title, bg=colour_black, font=("Arial", 14, "bold"), text= "Quản lý danh bạ", fg="white").pack(pady=5)
 
 # Tạo frame chứa bảng danh bạ
 frame_table = tk.Frame(root)
