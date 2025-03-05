@@ -2,6 +2,33 @@ import tkinter as tk
 from tkinter import ttk,messagebox
 import random
 
+# code event cho 4 nút
+def them():
+    tree.insert("", "end", values=random.choice(data_samples))
+
+def sua():
+    selected_item = tree.selection()
+    if selected_item:
+        tree.item(selected_item, values=random.choice(data_samples))
+    else:
+        messagebox.showwarning("Chú ý", "Vui lòng chọn một người để sửa")
+
+def tim_kiem():
+    for item in tree.get_children():
+        values = tree.item(item, "values")
+        if "Nguyên" in values:
+            tree.selection_set(item)
+            tree.focus(item)
+            return
+    messagebox.showinfo("Thông báo","Không tìm thấy liên hệ")
+
+def xoa():
+    selected_item = tree.selection()
+    if selected_item:
+        tree.delete(selected_item)
+    else:
+        messagebox.showwarning("Chú ý", "Vui lòng chọn một liên hệ để xóa!")
+
 # Danh sách dữ liệu mẫu
 data_samples = [
     ("Nguyễn", "Nguyên", "Nam", "0903 612 345", "khoinguyen.21413@gmail.com", "Đà Nẵng"),
@@ -11,8 +38,6 @@ data_samples = [
     ("Hoàng", "Dũng", "Nam", "0904 778 899", "hoangdung@gmail.com", "Hải Phòng"),
     ("Vũ", "Linh", "Nữ", "0965 112 223", "vulinh@gmail.com", "Cần Thơ"),
 ]
-
-# Hàm xử lý khi nhấn nút
 
 # Tạo cửa sổ chính
 root = tk.Tk()
@@ -61,32 +86,22 @@ for _ in range(5):
 frame_button = tk.Frame(root, bg= colour_black)
 frame_button.pack(side= "right", fill='y',padx= 5,pady=5)
 
-# code event cho 4 nút
-def them():
-    tree.insert("", "end", values=random.choice(data_samples))
+# code giao diện cho 4 nút
+btn_them = tk.Button(master= frame_button, bg= colour_white,
+                    text= "Thêm",width= 15, command= them)
+btn_them.pack(pady= 30)
 
-def sua():
-    selected_item = tree.selection()
-    if selected_item:
-        tree.item(selected_item, values=random.choice(data_samples))
-    else:
-        messagebox.showwarning("Chú ý", "Vui lòng chọn một người để sửa")
+btn_sua = tk.Button(master= frame_button, bg= colour_white,
+                    text= "Sửa", width= 15, command= sua)
+btn_sua.pack(pady= 30)
 
-def tim_kiem():
-    for item in tree.get_children():
-        values = tree.item(item, "values")
-        if "Nguyên" in values:
-            tree.selection_set(item)
-            tree.focus(item)
-            return
-    messagebox.showinfo("Thông báo","Không tìm thấy liên hệ")
+btn_tim_kiem = tk.Button(master= frame_button, bg= colour_white,
+                    text= "Tìm kiếm", width= 15, command= tim_kiem)
+btn_tim_kiem.pack(pady= 30)
 
-def xoa():
-    selected_item = tree.selection()
-    if selected_item:
-        tree.delete(selected_item)
-    else:
-        messagebox.showwarning("Chú ý", "Vui lòng chọn một liên hệ để xóa!")
+btn_xoa = tk.Button(master= frame_button,bg= colour_white,
+                    text= "Xóa", width= 15, command= xoa)
+btn_xoa.pack(pady= 30)
 
 # Chạy ứng dụng
 root.mainloop()
