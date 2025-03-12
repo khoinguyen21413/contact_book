@@ -15,23 +15,70 @@ def create_contact():
     create_window = tk.Toplevel(root)
     create_window.title("Tạo mới")
     create_window.geometry("300x400")
-    
-    # tiêu đề
+
+    # Tiêu đề
     tk.Label(create_window, text="Tạo mới", bg="lightgreen", font=("Arial", 14, "bold")).pack(fill="x", pady=5)
 
-    # tạo ô nhập dữ liệu
     # Họ
-    frame_lastname = tk.Frame(create_window,)
-    frame_lastname.pack(fill="x", padx=10, pady=2)
-    tk.Label(frame_lastname, text= "Họ").pack(side="left")
-    entry_lastname = tk.Entry(frame_lastname, width= 30)
-    entry_lastname.pack(side="right")
+    frame_lastname = tk.Frame(create_window)
+    frame_lastname.pack(fill="x", padx=15, pady=2)
+    tk.Label(frame_lastname, text="Họ").pack(side="left")
+    entry_lastname = tk.Entry(frame_lastname)
+    entry_lastname.pack(side="right", fill="x", expand=True)
 
-    # # Tên
-    # label_lastname = tk.Label(create_window, text= "Họ")
-    # label_lastname.pack(anchor= "w")
-    # entry_lastname = tk.Entry(create_window, width= 30)
-    # entry_lastname.pack(padx=10, pady=2)
+    # Tên
+    frame_firstname = tk.Frame(create_window)
+    frame_firstname.pack(fill="x", padx=15, pady=2)
+    tk.Label(frame_firstname, text="Tên").pack(side="left")
+    entry_firstname = tk.Entry(frame_firstname)
+    entry_firstname.pack(side="right", fill="x", expand=True)
+
+    # Giới tính
+    gender_var = tk.StringVar()
+    tk.Label(create_window, text="Giới tính:", font=("Arial", 10)).pack(anchor="w", padx=15, pady=2)
+
+    frame_gender = tk.Frame(create_window)
+    frame_gender.pack(fill="x", padx=15, pady=5)
+    tk.Radiobutton(frame_gender, text="Nam", variable=gender_var, value="Nam").pack(side="left", padx=5)
+    tk.Radiobutton(frame_gender, text="Nữ", variable=gender_var, value="Nữ").pack(side="left", padx=5)
+
+    # Số điện thoại
+    frame_phone = tk.Frame(create_window)
+    frame_phone.pack(fill="x", padx=15, pady=2)
+    tk.Label(frame_phone, text="Số điện thoại").pack(side="left")
+    entry_phone = tk.Entry(frame_phone)
+    entry_phone.pack(side="right", fill="x", expand=True)
+
+    # Email
+    frame_email = tk.Frame(create_window)
+    frame_email.pack(fill="x", padx=15, pady=2)
+    tk.Label(frame_email, text="Email").pack(side="left")
+    entry_email = tk.Entry(frame_email)
+    entry_email.pack(side="right", fill="x", expand=True)
+
+    # Địa chỉ
+    frame_address = tk.Frame(create_window)
+    frame_address.pack(fill="x", padx=15, pady=2)
+    tk.Label(frame_address, text="Địa chỉ").pack(side="left")
+    entry_address = tk.Entry(frame_address)
+    entry_address.pack(side="right", fill="x", expand=True)
+
+    def add_contact():
+        values = (
+            entry_lastname.get(),
+            entry_firstname.get(),
+            gender_var.get(),
+            entry_phone.get(),
+            entry_email.get(),
+            entry_address.get()
+        )
+        if all(values):
+            tree.insert("", "end", values=values)
+            create_window.destroy()
+        else:
+            messagebox.showwarning("Lỗi", "Vui lòng nhập đầy đủ thông tin!")
+    btn_add = tk.Button(create_window, text= "thêm", width= 15, command= add_contact)
+    btn_add.pack(pady=10)
 
 def sua():
     selected_item = tree.selection()
@@ -105,8 +152,8 @@ for col in columns:
 tree.pack(pady= 5, fill="both",expand=True)
 
 # Thêm 5 dữ liệu ngẫu nhiên vào danh bạ
-for _ in range(5):
-    tree.insert("", "end", values=random.choice(data_samples))
+for value in data_samples:
+    tree.insert("", "end", values=value)
 
 # frame chứa 4 nút theo hàng dọc
 frame_button = tk.Frame(root, bg= colour_black)
