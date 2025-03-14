@@ -34,7 +34,7 @@ def create_contact():
     entry_firstname.pack(side="right", fill="x", expand=True)
 
     # Giới tính
-    gender_var = tk.StringVar()
+    gender_var = tk.StringVar(value="Nam")  # Đặt giá trị mặc định là "Nam"
     tk.Label(create_window, text="Giới tính:", font=("Arial", 10)).pack(anchor="w", padx=15, pady=2)
 
     frame_gender = tk.Frame(create_window)
@@ -63,6 +63,7 @@ def create_contact():
     entry_address = tk.Entry(frame_address)
     entry_address.pack(side="right", fill="x", expand=True)
 
+    # Function to add new contact
     def add_contact():
         values = (
             entry_lastname.get(),
@@ -72,15 +73,20 @@ def create_contact():
             entry_email.get(),
             entry_address.get()
         )
+
         if all(values):
             tree.insert("", "end", values=values)
+            # Hủy cửa sổ khi nhập đầy đủ dữ liệu
             create_window.destroy()
         else:
             messagebox.showwarning("Lỗi", "Vui lòng nhập đầy đủ thông tin!")
-    btn_add = tk.Button(create_window, text= "thêm", width= 15, command= add_contact)
+            create_window.lift()  # Đưa cửa sổ lên trên cùng
+            create_window.focus_force()  # Đặt focus vào cửa sổ
+
+    btn_add = tk.Button(create_window, text= "Thêm", width= 15, command= add_contact)
     btn_add.pack(pady=10)
 
-def sua():
+def edit_contact():
     selected_item = tree.selection()
     if selected_item:
         tree.item(selected_item, values=random.choice(data_samples))
@@ -164,9 +170,9 @@ btn_them = tk.Button(master= frame_button, bg= colour_white,
                     text= "Tạo mới",width= 15, command= create_contact)
 btn_them.pack(pady= 30)
 
-btn_sua = tk.Button(master= frame_button, bg= colour_white,
-                    text= "Sửa", width= 15, command= sua)
-btn_sua.pack(pady= 30)
+btn_edit_contact = tk.Button(master= frame_button, bg= colour_white,
+                    text= "Sửa", width= 15, command= edit_contact)
+btn_edit_contact.pack(pady= 30)
 
 btn_tim_kiem = tk.Button(master= frame_button, bg= colour_white,
                     text= "Tìm kiếm", width= 15, command= tim_kiem)
