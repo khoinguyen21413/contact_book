@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from contact_form import ContactForm
 from data import sample_contacts
 from contact import Contact
+from search_contact_form import Search_contact
 
 class ContactManagerApp:
     def __init__(self, root):
@@ -52,13 +53,7 @@ class ContactManagerApp:
             messagebox.showwarning("Chú ý", "Vui lòng chọn một liên hệ để sửa")
 
     def search_contact(self):
-        for item in self.tree.get_children():
-            values = self.tree.item(item, "values")
-            if "Nguyên" in values:
-                self.tree.selection_set(item)
-                self.tree.focus(item)
-                return
-        messagebox.showinfo("Thông báo","Không tìm thấy liên hệ")
+        Search_contact(self.root, self.tree)
 
     def delete_contact(self):
         selected = self.tree.selection()
