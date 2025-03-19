@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from contact import Contact
+import database as db
 
 class ContactForm(tk.Toplevel):
     def __init__(self, root, tree, contact=None):
@@ -48,6 +49,7 @@ class ContactForm(tk.Toplevel):
 
     def save_contact(self):
         values = (
+            db.get_contact_count()+1,
             self.entries["Họ"].get(),
             self.entries["Tên"].get(),
             self.gender_var.get(),
@@ -63,6 +65,8 @@ class ContactForm(tk.Toplevel):
                 self.tree.item(selected, values=contact.to_tuple())
             else:  # Thêm mới
                 self.tree.insert("", "end", values=contact.to_tuple())
+                db.add_contact(contact)
+
             self.destroy()
         else:
             messagebox.showwarning("Lỗi", "Vui lòng nhập đầy đủ thông tin!")

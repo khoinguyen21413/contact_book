@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from contact_form import ContactForm
-from data import sample_contacts
+from database import get_all_contacts
 from contact import Contact
 from search_contact_form import Search_contact
 
@@ -20,18 +20,24 @@ class ContactManagerApp:
         # Frame bảng danh bạ
         frame_table = tk.Frame(root)
         frame_table.pack(side="left", fill="both", expand=True, padx=5)
-        self.columns = ("Họ", "Tên", "Giới tính", "Số điện thoại", "Email", "Địa chỉ")
+        self.columns = ("Id","Họ", "Tên", "Giới tính", "Số điện thoại", "Email", "Địa chỉ")
         self.tree = ttk.Treeview(frame_table, columns=self.columns, show="headings", height=8)
 
         for col in self.columns:
             self.tree.heading(col, text=col)
-            self.tree.column(col, width=100 if col == "Email" else 60)
+            if col != "Id":
+                self.tree.column(col, width=100 if col == "Email" else 50)
+            else:
+                self.tree.column(col, width=20)
 
         self.tree.pack(pady=5, fill="both", expand=True)
 
-        # Thêm dữ liệu mẫu
-        for contact in sample_contacts:
-            self.tree.insert("", "end", values=contact.to_tuple())
+        # # Thêm dữ liệu mẫu
+        # for contact in sample_contacts:
+        #     self.tree.insert("", "end", values=contact.to_tuple())
+
+        # thêm dữ liệu từ database contact
+        self.display_contacts()
 
         # Frame chứa các nút
         frame_button = tk.Frame(root, bg="#242424")
@@ -41,8 +47,15 @@ class ContactManagerApp:
         for text, cmd in buttons:
             tk.Button(frame_button, text=text, width=15, command=cmd).pack(pady=15)
 
+    def display_contacts(self):
+        """Hiển thị dữ liệu từ database lên TreeView."""
+        self.tree.delete(*self.tree.get_children())  # Xóa dữ liệu cũ
+        for row in get_all_contacts():
+            self.tree.insert("", "end", values=row)
+
     def create_contact(self):
         ContactForm(self.root, self.tree)
+        self.display_contacts()
 
     def edit_contact(self):
         selected = self.tree.selection()
