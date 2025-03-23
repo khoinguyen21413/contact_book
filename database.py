@@ -53,3 +53,10 @@ def get_contact_count():
     
     conn.close()
     return count
+def delete_contact(contact_id):
+    """Xóa một liên hệ theo ID trong database."""
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM Contacts WHERE id = ?", (contact_id,))
+    conn.commit()
+    conn.close()

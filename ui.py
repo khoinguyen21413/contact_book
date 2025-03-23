@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from contact_form import ContactForm
-from database import get_all_contacts
+import database as db
 from contact import Contact
 from search_contact_form import Search_contact
 
@@ -50,7 +50,7 @@ class ContactManagerApp:
     def display_contacts(self):
         """Hiển thị dữ liệu từ database lên TreeView."""
         self.tree.delete(*self.tree.get_children())  # Xóa dữ liệu cũ
-        for row in get_all_contacts():
+        for row in db.get_all_contacts():
             self.tree.insert("", "end", values=row)
 
     def create_contact(self):
@@ -59,19 +59,30 @@ class ContactManagerApp:
 
     def edit_contact(self):
         selected = self.tree.selection()
-        if selected:
-            values = self.tree.item(selected, "values")
-            ContactForm(self.root, self.tree, Contact(*values))
-        else:
-            messagebox.showwarning("Chú ý", "Vui lòng chọn một liên hệ để sửa")
+        if not selected:
+            messagebox.showwarning("Lỗi", "Vui lòng chọn một liên hệ để chỉnh sửa!")
+            return
+        values = self.tree.item(selected[0], "values")
+        contact = Contact(*values)
+        ContactForm(self.root, self.tree, contact)
 
     def search_contact(self):
         Search_contact(self.root, self.tree)
 
     def delete_contact(self):
         selected = self.tree.selection()
+        values = self.tree.item(selected[0], "values")
+
+        contact = Contact(*values)
         if selected:
-            self.tree.delete(selected)
+            if not values:
+                messagebox.showerror("Lỗi", "Không thể lấy thông tin liên hệ để xóa.")
+                return     
+            # Xác nhận xóa
+            if messagebox.askyesno("Xác nhận", f"Bạn có chắc chắn muốn xóa ID {contact.id} không?"):
+                db.delete_contact(contact.id)
+                self.display_contacts()
+            return
         else:
             messagebox.showwarning("Chú ý", "Vui lòng chọn một liên hệ để xóa!")
 
