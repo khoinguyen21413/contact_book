@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from contact import Contact
+import database as db
 
 class ContactForm(tk.Toplevel):
+    
     def __init__(self, root, tree, contact=None):
         super().__init__(root)
         self.title("Tạo mới" if contact is None else "Chỉnh sửa")
@@ -46,8 +48,13 @@ class ContactForm(tk.Toplevel):
         btn_text = "Thêm" if contact is None else "Cập nhật"
         tk.Button(self, text=btn_text, width=15, command=self.save_contact).pack(pady=10)
 
+    # Method này xử lý chung cho case Add và Edit 
     def save_contact(self):
+        # Trong case New contact thì id cần phải là lấy tổng số contact + 1
+        # Trong case Edit contact thì get id contact hiện tại
+        id_get = self.contact.id if self.contact else db.get_contact_count() + 1
         values = (
+            id_get,
             self.entries["Họ"].get(),
             self.entries["Tên"].get(),
             self.gender_var.get(),
@@ -61,8 +68,11 @@ class ContactForm(tk.Toplevel):
             if self.contact:  # Chỉnh sửa
                 selected = self.tree.selection()
                 self.tree.item(selected, values=contact.to_tuple())
+                db.update_contact(contact)
             else:  # Thêm mới
                 self.tree.insert("", "end", values=contact.to_tuple())
+                db.add_contact(contact)
+
             self.destroy()
         else:
             messagebox.showwarning("Lỗi", "Vui lòng nhập đầy đủ thông tin!")
