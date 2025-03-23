@@ -1,4 +1,5 @@
 import sqlite3
+from contact import Contact
 
 DB_NAME = "contacts.db"
 
@@ -33,7 +34,7 @@ def get_all_contacts():
     conn.close()
     return contacts
 
-def add_contact(contact):
+def add_contact(contact: Contact):
     """Thêm liên hệ mới vào database."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -53,10 +54,25 @@ def get_contact_count():
     
     conn.close()
     return count
+
+def update_contact(contact: Contact):
+    """Cập nhật liên hệ."""
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+   
+    cursor.execute("""
+        UPDATE Contacts 
+        SET first_name=?, last_name=?, gender=?, phone=?, email=?, address=? 
+        WHERE id=?
+    """, (contact.first_name, contact.last_name, contact.gender, 
+          contact.phone, contact.email, contact.address, contact.id))
+    conn.commit()
+    conn.close()
+
 def delete_contact(contact_id):
     """Xóa một liên hệ theo ID trong database."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM Contacts WHERE id = ?", (contact_id,))
+    cursor.execute("DELETE FROM Contacts WHERE id = ?", (contact_id))
     conn.commit()
     conn.close()
